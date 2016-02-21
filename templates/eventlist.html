@@ -1,19 +1,26 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<table cellspacing="10" cellpadding="5">
-	<tr bgcolor="#CCFFCC">
-		<td><center><h1>Artist<h1></center></td>
-		<td><center><h1>Date</h1></center></td>
-		<td><center><h1>Venue</h1></center></td>
+<table>
+	<thead>
+	<tr>
+		<th><center><h1>Artist<h1></center></th>
+		<th><center><h1>Date</h1></center></th>
+		<th><center><h1>Venue</h1></center></th>
 	</tr>
+	</thead>
+	<tbody>
 	{% for event in items %}
-		<tr bgcolor="#{{ loop.cycle('0099CC', '66CCFF') }}">
+		<tr>
 			<td>{% for artist in event.artists %}
 					{{ artist.name }} <br />
 				{% endfor %}
 			</td>
-			<td>{{ event.date }}</td>
+			<td>
+				{{ event.date.day_of_week }}<br />
+				{{ event.date.date }}<br />
+				{{ event.date.time }}
+			</td>
 			<td>
 				<b><a href='/venues/{{ event.venue.id }}'>{{ event.venue.name }}</a></b><br />
 
@@ -28,6 +35,7 @@
 			</td>
 		</tr>
 	{% endfor %}
+	</tbody>
 </table>
 
 {% endblock %}
