@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<table cellspacing="10" cellpadding="5">
+	<tr bgcolor="#CCFFCC">
+		<td><center><h1>Artist<h1></center></td>
+		<td><center><h1>Date</h1></center></td>
+		<td><center><h1>Venue</h1></center></td>
+	</tr>
+	{% for event in items %}
+		<tr bgcolor="#{{ loop.cycle('0099CC', '66CCFF') }}">
+			<td>{% for artist in event.artists %}
+					{{ artist.name }} <br />
+				{% endfor %}
+			</td>
+			<td>{{ event.date }}</td>
+			<td>
+				<b><a href='/venues/{{ event.venue.id }}'>{{ event.venue.name }}</a></b><br />
+
+				{{ event.venue.address }}<br />
+				{{ event.venue.city }}, {{ event.venue.state }} {{ event.venue.zipcode }}<br />
+
+				{% if event.venue.url %}
+					<a href='{{ event.venue.url }}' target='_blank'>Website</a><br />
+				{% endif %}
+
+				<a href='https://maps.google.com/?q={{event.venue.google_map_search_term}}' target='_blank'>Google Maps Link</a>
+			</td>
+		</tr>
+	{% endfor %}
+</table>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+
+{% for letter in letters %}
+	<a href='/venue_list/{{ letter }}'>{{ letter }}</a> | 
+{% endfor %}
+
+<table cellspacing="10" cellpadding="5">
+{% for venue in items %}
+	<tr bgcolor='#66CCFF'>
+		<td>
+			<b><a href='/venues/{{ venue.id }}'>{{ venue.name }}</a></b><br />
+
+			{{ venue.address }}<br />
+			{{ venue.city }}, {{ venue.state }} {{ venue.zipcode }}<br />
+
+			{% if venue.url %}
+				<a href='{{ venue.url }}' target='_blank'>Website</a><br />
+			{% endif %}
+
+			<a href='https://maps.google.com/?q={{venue.google_map_search_term}}' target='_blank'>Google Maps Link</a>
+			<br />
+		</td>
+	</tr>
+{% endfor %}
+</table>
+
+{% endblock %}
