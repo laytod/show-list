@@ -1,11 +1,11 @@
 import pymongo
 
-from jbapi import JBapi, api_key
+from jbapi import JBapi
 
 
 class EventList(object):
     def __init__(self):
-        self.jambase_api = JBapi(api_key)
+        self.jambase_api = JBapi()
         conn = pymongo.MongoClient()
         self.db = conn.jambase
 
