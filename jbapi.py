@@ -15,20 +15,29 @@ class JBapiError(Exception):
 
 class JBapi(object):
     def __init__(self, api_key=None, zipcode=33584, radius=50):
+        self.config = self._read_config()
+
         self.api_key = api_key or self.default_api_key
         self.zipcode = zipcode
         self.radius = radius
 
-    @property
-    def default_api_key(self):
-        with open('config.json', 'r') as config:
+    def _read_config(self, path=None):
+        path = path or 'config.json'
+
+        # TODO: Add more error handling for config reading
+        with open(path, 'r') as config:
             config_data = config.read()
 
         try:
-            json_config = json.loads(config_data)
-            return json_config.get('api_key')
+            return json.loads(config_data)
         except (ValueError, TypeError):
             raise JBapiError('Cannot parse config')
+
+    @property
+    def default_api_key(self):
+        api_key = self.config.get('api_key')
+        assert api_key is not None, 'No api_key in config.json'
+        return api_key
 
     @property
     def url(self):
@@ -50,6 +59,7 @@ class JBapi(object):
         if response.status_code == 200:
             return response.json()
         else:
+            # TODO: Add more error handling for more specific HTTP codes
             raise JBapiError('API Request Failed: {code} {msg}'.format(
                 code=response.status_code,
                 msg=response.reason

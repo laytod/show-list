@@ -8,46 +8,43 @@ class EventList(object):
         self.jambase_api = JBapi()
         conn = pymongo.MongoClient()
         self.db = conn.jambase
+        self.events = self.db.events
 
-    def update_events(self):
-        event_data = self.jambase_api.get_events()
+    def update_events(self, event_data=None):
+        if event_data is None:
+            event_data = self.jambase_api.get_events()
+
         self.db.drop_collection('events')
         self.db.events.insert(event_data)
 
     def get_events(self, search_filter=None, search_value=None):
-        events = self.db.events
+        query = {}
 
         if search_filter == 'venue_id':
-            x = [e for e in events.find(
-                {'Venue.Id': int(search_value)}
-            )]
+            query = {'Venue.Id': int(search_value)}
 
-            return x
-
-        return [e for e in events.find()]
+        return self.events.find(query)
 
     def get_venues(self, letter=None):
-        events = self.db.events
-        venue_names = events.find().distinct('Venue.Name')
+        venue_names = self.events.find().distinct('Venue.Name')
 
         if letter:
-            venue_names = [n for n in venue_names if letter.lower() == n[0].lower()]
+            # filter venue names by first letter
+            letter = letter.lower()
+            venue_names = filter(lambda k: k.lower().startswith(letter), venue_names)
 
-        venues = []
-        for name in venue_names:
-            venue = events.find_one({'Venue.Name': name})
-            venues.append(venue)
-
-        return venues
+        # TODO: Could likely use a regex here...
+        return self.events.find({'Venue.Name': {'$in': venue_names}})
 
 
 if __name__ == '__main__':
+    import pprint
     el = EventList()
 
     events = el.get_events()
 
     for i in events:
-        print i
-        print '--'
+        pprint.pprint(i)
+        print '-----'
 
-    print len(events)
+    print events.count()
