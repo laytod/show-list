@@ -33,8 +33,16 @@ class EventList(object):
             letter = letter.lower()
             venue_names = filter(lambda k: k.lower().startswith(letter), venue_names)
 
-        # TODO: Could likely use a regex here...
-        return self.events.find({'Venue.Name': {'$in': venue_names}})
+        venues = []
+        for venue_name in venue_names:
+            # find one result for each venue name and strip out the venue dict
+            result = self.events.find_one({'Venue.Name': venue_name})
+            venues.append(result['Venue'])
+
+        print venues
+        print '------'
+
+        return venues
 
 
 if __name__ == '__main__':

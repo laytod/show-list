@@ -1,12 +1,8 @@
 import json
 import requests
-import logging
 
 from decorators import throttle
 from page import Page
-
-
-logger = logging.getLogger(__name__)
 
 
 class JBapiError(Exception):
