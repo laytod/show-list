@@ -73,4 +73,8 @@ class VenueView(object):
 
     @property
     def json(self):
-        return self.__dict__
+        json_dict = self.__dict__
+        json_dict.update({
+            'google_map_search_term': self.google_map_search_term,
+        })
+        return json_dict

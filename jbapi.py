@@ -18,7 +18,8 @@ class JBapi(object):
         self.radius = radius
 
     def _read_config(self, path=None):
-        path = path or 'config.json'
+        # TODO: dynamically generate default path
+        path = path or '/home/laytod/scripts/show-list/config.json'
 
         # TODO: Add more error handling for config reading
         with open(path, 'r') as config:

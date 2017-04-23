@@ -1,7 +1,11 @@
 <html>
 
 <head>
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/styles.css') }}">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+
+	<!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/styles.css') }}"> -->
+
+	<link rel="stylesheet" type="text/css" href="/showlist/static/styles/styles.css">
 </head>
 
 <body>
@@ -9,12 +13,21 @@
 	<table>
 		<tr>
 			<td style='padding-right: 100px;'>Number of results: {{ items|length }}</td>
-			<td style='padding-right: 100px;'><a href='/'>All Events</a></td>
-			<td style='padding-right: 100px;'><a href='/venue_list/'>Show Venues</a></td>
+			<td style='padding-right: 100px;'>
+				<a href="{{ url_for('showlist.index') }}">All Events</a>
+			</td>
+			<td style='padding-right: 100px;'>
+				<a href="{{ url_for('showlist.venue_list') }}">Show Venues</a>
+			</td>
 		</tr>
 	</table>
 
 	{% block content %}{% endblock %}
+
+	<center>
+		**Concert information provided by <a href="http://www.jambase.com">JamBase</a>**
+	</center>
+
 
 </body>
 
