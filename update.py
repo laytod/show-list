@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!./venv/bin/python
 from models import EventList
 
 import sys
