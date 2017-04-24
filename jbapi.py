@@ -1,3 +1,4 @@
+from os.path import realpath, dirname
 import json
 import requests
 
@@ -18,8 +19,9 @@ class JBapi(object):
         self.radius = radius
 
     def _read_config(self, path=None):
-        # TODO: dynamically generate default path
-        path = path or '/home/laytod/scripts/show-list/config.json'
+        this_files_path = realpath(__file__)
+        default_path = dirname(this_files_path) + '/config.json'
+        path = path or default_path
 
         # TODO: Add more error handling for config reading
         with open(path, 'r') as config:
